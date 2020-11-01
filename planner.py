@@ -1,30 +1,22 @@
-from environment import *
+from environment_working import *
 
-@deadline(120)
-def getPlan():
-	#######################################
-	######## Insert your code here ########
-	#######################################
-	return [["moveTo", "fridge"], \
-			   ["changeState", "fridge", "open"], \
-			   ["moveTo", "apple"], \
-			   ["pick", "apple"], \
-			   ["moveTo", "fridge"], \
-			   ["drop", "fridge"], \
-			   ["moveTo", "orange"], \
-			   ["pick", "orange"], \
-			   ["moveTo", "fridge"], \
-			   ["drop", "fridge"], \
-			   ["moveTo", "banana"], \
-			   ["pick", "banana"], \
-			   ["moveTo", "fridge"], \
-			   ["drop", "fridge"], \
-			   ["changeState", "fridge", "close"], \
-			   ]
+def getPlan(state):
+	node = (deepcopy(state), [])
+	curlayer = [node]; nextlayer = []
 
-# Execute function takes in a plan as input and returns if goal constraints 
-# are valid and the final state after plan execution
-res, state = execute(getPlan())
+	# BFS planner
+	for i in range(5):
+		print('Depth = ', i)
+		for n in curlayer:
+			if checkGoal(n[0]):
+				print("Result = ", n[1])
+				return n[1]
+			nextlayer += allNeighbours(n)
+		curlayer = nextlayer
+		nextlayer = []
+
+res, state = execute(getPlan(state))
 
 print(res)
 print(state)
+
